@@ -655,42 +655,53 @@ button {
 
 @media(max-width: 768px) {
       .top-in {
-            padding: 8px 12px;
-            gap: 8px;
+            padding: 10px 14px;
+            display: flex;
             flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px 12px;
       }
 
       .brand {
-            font-size: 1.05rem;
-            gap: 6px;
-            white-space: nowrap;
+            font-size: 1.15rem;
+            gap: 8px;
+            order: 1;
       }
 
       .brand i {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
       }
 
       .promo {
-            display: block !important;
-            flex: 0 0 100%;
             order: 3;
-            min-width: 0;
-            font-size: .72rem;
-            line-height: 1.3;
-            padding: 2px 0 3px;
+            width: 100%;
+            flex: 0 0 100%;
+            background: rgba(45, 90, 39, 0.08);
+            /* ເພີ່ມພື້ນຫຼັງນ້ອຍໆໃຫ້ເບິ່ງງາມ */
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            margin-top: 2px;
+            overflow: hidden;
+            white-space: nowrap;
       }
 
       .promo-track {
             display: inline-block;
             white-space: nowrap;
-            animation-duration: 14s;
+            padding-left: 100%;
+            animation: promo-scroll 15s linear infinite;
       }
 
       .header-actions {
-            gap: 5px;
-            flex-shrink: 0;
+            order: 2;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
       }
 
       .header-link {
