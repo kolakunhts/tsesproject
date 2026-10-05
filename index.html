@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>078food · ສັ່ງອາຫານສົ່ງເຖິງເຮືອນ</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Noto+Serif+Lao:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS Style Sheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Header / Navbar -->
+    <header class="top" id="home">
+      <div class="top-in">
+        <div class="brand"><i aria-hidden="true">🍲</i>078food</div>
+
+        <nav class="header-nav" aria-label="ການນຳທາງ">
+          <a class="icon-btn header-link" href="#home" aria-label="ໜ້າຫຼັກ" title="ໜ້າຫຼັກ">
+            <i class="fa-solid fa-house"></i>
+          </a>
+          <a class="icon-btn header-link" href="#menu-section" aria-label="ເບິ່ງເມນູ" title="ເບິ່ງເມນູ">
+            <i class="fa-solid fa-utensils"></i>
+          </a>
+          <a class="icon-btn header-link" href="#contact" aria-label="ຕິດຕໍ່ຮ້ານ" title="ຕິດຕໍ່ຮ້ານ">
+            <i class="fa-solid fa-phone"></i>
+          </a>
+        </nav>
+
+        <div class="promo" aria-label="ຂ່າວໂຄສະນາ">
+          <span class="promo-track">🎉 ໂປຣໂມຊັນ: ສັ່ງຄົບ 200,000 ₭ ສົ່ງຟຣີ · ອາຫານລາວແທ້ ສົ່ງເຖິງເຮືອນໃນ 30 ນາທີ · 🛵 ຄ່າສົ່ງເລີ່ມຕົ້ນ 10,000 ₭</span>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn cart-toggle" id="cartToggle" aria-label="ເປີດກະຕ່າ" title="ເປີດກະຕ່າ">
+            <i class="fa-solid fa-cart-shopping"></i> <span class="badge" id="cartBadge">0</span>
+          </button>
+          <button class="icon-btn" id="themeBtn" aria-label="ປ່ຽນໂໝດສີ" title="ປ່ຽນໂໝດສີ">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Banner Wrapper -->
+    <div class="hero-wrapper">
+      <section class="hero">
+        <h1>ສົ່ງເຖິງເຮືອນພາຍໃນ 30 ນາທີ</h1>
+        <p>ເລືອກເມນູທີ່ມັກ ໃສ່ກະຕ່າ ແລ້ວສັ່ງໄດ້ເລີຍ.</p>
+      </section>
+    </div>
+
+    <!-- Main Content Layout -->
+    <main class="layout">
+      <section id="menu-section" aria-label="ເມນູອາຫານ">
+        <div class="tools">
+          <div class="cats" id="cats" role="group" aria-label="ໝວດໝູ່ອາຫານ">
+            <button class="cat active" data-cat="ທັງໝົດ">ທັງໝົດ</button>
+            <button class="cat" data-cat="ອາຫານຈານດ່ຽວ">ອາຫານຈານດ່ຽວ</button>
+            <button class="cat" data-cat="ເຄື່ອງດື່ມ">ເຄື່ອງດື່ມ</button>
+            <button class="cat" data-cat="ຂອງຫວານ">ຂອງຫວານ</button>
+          </div>
+          <input class="search" id="search" type="search" placeholder="ຊອກຫາເມນູ…" aria-label="ຊອກຫາເມນູ">
+        </div>
+
+        <div class="grid" id="grid">
+          
+          <!-- ກ່ອງທີ 1 -->
+          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
+            <div class="food-pic">
+              <small>ອາຫານຈານດ່ຽວ</small>
+              <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80" alt="ເຝີໄກ່" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ເຝີໄກ່</h3>
+              <p class="desc">ນ້ຳຊຸບໃສ ເສັ້ນນຸ້ມ ໃສ່ຜັກສົດ</p>
+              <div class="food-foot">
+                <span class="price">30,000 ₭</span>
+                <button class="add" onclick="addToCart(1, 'ເຝີໄກ່', 30000, 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ກ່ອງທີ 2 -->
+          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
+            <div class="food-pic">
+              <small>ອາຫານຈານດ່ຽວ</small>
+              <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="ເຂົ້າປຽກເສັ້ນ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ເຂົ້າປຽກເສັ້ນ</h3>
+              <p class="desc">ເສັ້ນເຮັດເອງ ນ້ຳຊຸບຂຸ້ນ ຫອມກະທຽມຈຽວ</p>
+              <div class="food-foot">
+                <span class="price">28,000 ₭</span>
+                <button class="add" onclick="addToCart(2, 'ເຂົ້າປຽກເສັ້ນ', 28000, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ກ່ອງທີ 3 -->
+          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
+            <div class="food-pic">
+              <small>ອາຫານຈານດ່ຽວ</small>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCjDrHHIMZ1p3EZ6Hr3fS9BvGVrQmg87ammEbBgVYxhlG2q0gY72shRTSY&s=10" alt="ລາບໄກ່ + ເຂົ້າໜຽວ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ລາບໄກ່</h3>
+              <p class="desc">ລາບໄກ່ເຜັດກຳລັງດີ</p>
+              <div class="food-foot">
+                <span class="price">35,000 ₭</span>
+                <button class="add" onclick="addToCart(3, 'ລາບໄກ່', 35000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCjDrHHIMZ1p3EZ6Hr3fS9BvGVrQmg87ammEbBgVYxhlG2q0gY72shRTSY&s=10')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ກ່ອງທີ 4 -->
+          <article class="food" data-cat="ເຄື່ອງດື່ມ">
+            <div class="food-pic">
+              <small>ເຄື່ອງດື່ມ</small>
+              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80" alt="ກາເຟເຢັນລາວ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ກາເຟເຢັນລາວ</h3>
+              <p class="desc">ກາເຟປາກຊ່ອງ ນົມຂຸ້ນຫວານ</p>
+              <div class="food-foot">
+                <span class="price">18,000 ₭</span>
+                <button class="add" onclick="addToCart(4, 'ກາເຟເຢັນລາວ', 18000, 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ກ່ອງທີ 5 -->
+          <article class="food" data-cat="ຂອງຫວານ">
+            <div class="food-pic">
+              <small>ຂອງຫວານ</small>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDn0BC7VR2c5-d3AsjmH1HfDjva1uMZrVpo8ctBTZNXQ&s=10" alt="ເຂົ້າໜຽວໝາກມ່ວງ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ເຂົ້າໜຽວໝາກມ່ວງ</h3>
+              <p class="desc">ໝາກມ່ວງສຸກ ເຂົ້າໜຽວກະທິ</p>
+              <div class="food-foot">
+                <span class="price">28,000 ₭</span>
+                <button class="add" onclick="addToCart(5, 'ເຂົ້າໜຽວໝາກມ່ວງ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDn0BC7VR2c5-d3AsjmH1HfDjva1uMZrVpo8ctBTZNXQ&s=10')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
+            <div class="food-pic">
+              <small>ອາຫານຈານດ່ຽວ</small>
+              <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="ສະລັດຜັກ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ສະລັດຜັກ</h3>
+              <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
+              <div class="food-foot">
+                <span class="price">28,000 ₭</span>
+                <button class="add" onclick="addToCart(6, 'ສະລັດຜັກ', 28000, 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="food" data-cat="ຂອງຫວານ">
+            <div class="food-pic">
+              <small>ຂອງຫວານ</small>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10" alt="ກະເເລັມສະຕໍເບີລີ້" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ກະເເລັມສະຕໍເບີລີ້</h3>
+              <p class="desc">ຫອມຫວານເເຊບ</p>
+              <div class="food-foot">
+                <span class="price">28,000 ₭</span>
+                <button class="add" onclick="addToCart(7, 'ກະແລັມສະຕໍເບີລີ້', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="food" data-cat="ຂອງຫວານ">
+            <div class="food-pic">
+              <small>ຂອງຫວານ</small>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s" alt="ໄອສະຄີມຊາຂຽວ" loading="lazy">
+            </div>
+            <div class="food-body">
+              <h3>ໄອສະຄີມຊາຂຽວ</h3>
+              <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
+              <div class="food-foot">
+                <span class="price">28,000 ₭</span>
+                <button class="add" onclick="addToCart(8, 'ໄອສະຄີມຊາຂຽວ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s')">+ ເພີ່ມ</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Cart Drawer -->
+      <aside class="cart" id="cart" aria-label="ກະຕ່າສິນຄ້າ">
+        <div class="cart-head">
+          <h2>ກະຕ່າຂອງທ່ານ</h2>
+          <button class="icon-btn cart-close" id="cartClose" aria-label="ປິດກະຕ່າ">✕</button>
+        </div>
+        <div class="cart-scroll" id="cartList"></div>
+        <div class="cart-foot" id="cartFoot">
+          <label class="field" id="fName">ຊື່ຜູ້ຮັບ
+            <input id="inName" autocomplete="name" placeholder="ເຊັ່ນ ສົມຊາຍ ວົງດາລາ">
+            <span class="err-msg">ກະລຸນາໃສ່ຊື່</span>
+          </label>
+          <label class="field" id="fPhone">ເບີໂທ
+            <input id="inPhone" inputmode="tel" autocomplete="tel" placeholder="020 xxxx xxxx">
+            <span class="err-msg">ກະລຸນາໃສ່ເບີໂທ (ຢ່າງໜ້ອຍ 8 ຕົວເລກ)</span>
+          </label>
+          <label class="field" id="fAddr">ທີ່ຢູ່ຈັດສົ່ງ
+            <textarea id="inAddr" rows="2" placeholder="ບ້ານ, ຖະໜົນ, ຈຸດສັງເກດ"></textarea>
+            <span class="err-msg">ກະລຸນາໃສ່ທີ່ຢູ່ຈັດສົ່ງ</span>
+          </label>
+          <div class="row2">
+            <label class="field">ເຂດຈັດສົ່ງ
+              <select id="zone">
+                <option value="10000">ໃນເມືອງ (10,000 ₭)</option>
+                <option value="20000">ນອກເມືອງ (20,000 ₭)</option>
+              </select>
+            </label>
+            <label class="field">ການຊຳລະ
+              <select id="pay">
+                <option>ເງິນສົດປາຍທາງ</option>
+                <option>ໂອນ / QR</option>
+              </select>
+            </label>
+          </div>
+          <div id="freeNote"></div>
+          <div class="sum"><span>ລາຄາອາຫານ</span><span id="sSub">0 ₭</span></div>
+          <div class="sum"><span>ຄ່າຈັດສົ່ງ</span><span id="sFee">0 ₭</span></div>
+          <div class="sum total"><span>ລວມທັງໝົດ</span><span id="sTotal">0 ₭</span></div>
+          <button class="order-btn" id="orderBtn">ສັ່ງຊື້ເລີຍ</button>
+          <button class="link-btn" id="clearBtn">ລ້າງກະຕ່າ</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="backdrop" id="modal" role="dialog" aria-modal="true">
+    <div class="receipt" id="receipt"></div>
+  </div>
+
+  <!-- Footer Wrapper -->
+  <div class="site-footer-wrapper" id="contact">
+    <footer class="site-footer">
+      <div><strong>078food</strong><br>ບໍລິການ ສົ່ງເຖິງເຮືອນ</div>
+      <div>📞 <a href="tel:02055551234">020 5555 1234</a><br>📍 ວຽງຈັນ, ລາວ</div>
+      <div>ເປີດທຸກມື້ 09:00–21:00</div>
+    </footer>
+  </div>
+
+  <!-- Bottom Navigation Bar ສຳລັບມືຖື -->
+  <nav class="mobile-bottom-nav" aria-label="ການນຳທາງລຸ່ມ">
+    <a href="#home" class="bottom-nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>ໜ້າຫຼັກ</span>
+    </a>
+    <a href="#menu-section" class="bottom-nav-item">
+      <i class="fa-solid fa-utensils"></i>
+      <span>ເມນູ</span>
+    </a>
+    <button class="bottom-nav-item cart-toggle-btn" id="mobileCartBtn">
+      <div class="icon-wrap">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="mobileCartBadge">0</span>
+      </div>
+      <span>ກະຕ່າ</span>
+    </button>
+    <a href="#contact" class="bottom-nav-item">
+      <i class="fa-solid fa-phone"></i>
+      <span>ຕິດຕໍ່</span>
+    </a>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
