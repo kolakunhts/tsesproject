@@ -16,13 +16,6 @@
 
   <!-- CSS Style Sheet -->
   <link rel="stylesheet" href="styles.css">
-
-  <style>
-    .cart-toggle { display: inline-flex; }
-    .promo { flex: 1; min-width: 0; overflow: hidden; color: var(--green); font-size: .86rem; font-weight: 600; white-space: nowrap; }
-    .promo-track { display: inline-block; padding-left: 100%; animation: promo-scroll 18s linear infinite; }
-    @keyframes promo-scroll { to { transform: translateX(-100%); } }
-  </style>
 </head>
 
 <body>
@@ -62,13 +55,8 @@
     <!-- Hero Banner Wrapper -->
     <div class="hero-wrapper">
       <section class="hero">
-        <h1> ສົ່ງເຖິງເຮືອນພາຍໃນ 30 ນາທີ</h1>
+        <h1>ສົ່ງເຖິງເຮືອນພາຍໃນ 30 ນາທີ</h1>
         <p>ເລືອກເມນູທີ່ມັກ ໃສ່ກະຕ່າ ແລ້ວສັ່ງໄດ້ເລີຍ.</p>
-        <!-- <div class="hero-meta">
-          <span class="chip-info">🛵 ໃນເມືອງ 10,000 ₭</span>
-          <span class="chip-info">🏡 ນອກເມືອງ 20,000 ₭</span>
-          <span class="chip-info">🎁 ສັ່ງຄົບ 200,000 ₭ ສົ່ງຟຣີ</span>
-        </div> -->
       </section>
     </div>
 
@@ -167,7 +155,6 @@
             </div>
           </article>
 
-
           <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
             <div class="food-pic">
               <small>ອາຫານຈານດ່ຽວ</small>
@@ -178,7 +165,7 @@
               <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
               <div class="food-foot">
                 <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(5, 'ສະລັດຜັກ', 28000, 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">+ ເພີ່ມ</button>
+                <button class="add" onclick="addToCart(6, 'ສະລັດຜັກ', 28000, 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">+ ເພີ່ມ</button>
               </div>
             </div>
           </article>
@@ -193,7 +180,7 @@
               <p class="desc">ຫອມຫວານເເຊບ</p>
               <div class="food-foot">
                 <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(5, 'ກະແລັມສະຕໍເບີລີ້', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10')">+ ເພີ່ມ</button>
+                <button class="add" onclick="addToCart(7, 'ກະແລັມສະຕໍເບີລີ້', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10')">+ ເພີ່ມ</button>
               </div>
             </div>
           </article>
@@ -208,7 +195,7 @@
               <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
               <div class="food-foot">
                 <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(5, 'ໄອສະຄີມຊາຂຽວ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s')">+ ເພີ່ມ</button>
+                <button class="add" onclick="addToCart(8, 'ໄອສະຄີມຊາຂຽວ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s')">+ ເພີ່ມ</button>
               </div>
             </div>
           </article>
@@ -275,6 +262,29 @@
       <div>ເປີດທຸກມື້ 09:00–21:00</div>
     </footer>
   </div>
+
+  <!-- Bottom Navigation Bar ສຳລັບມືຖື -->
+  <nav class="mobile-bottom-nav" aria-label="ການນຳທາງລຸ່ມ">
+    <a href="#home" class="bottom-nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>ໜ້າຫຼັກ</span>
+    </a>
+    <a href="#menu-section" class="bottom-nav-item">
+      <i class="fa-solid fa-utensils"></i>
+      <span>ເມນູ</span>
+    </a>
+    <button class="bottom-nav-item cart-toggle-btn" id="mobileCartBtn">
+      <div class="icon-wrap">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="mobileCartBadge">0</span>
+      </div>
+      <span>ກະຕ່າ</span>
+    </button>
+    <a href="#contact" class="bottom-nav-item">
+      <i class="fa-solid fa-phone"></i>
+      <span>ຕິດຕໍ່</span>
+    </a>
+  </nav>
 
   <script src="app.js"></script>
 </body>

@@ -77,6 +77,8 @@
             $("sFee").textContent = summary.count ? (summary.fee ? formatPrice(summary.fee) : "ຟຣີ") : "0 ₭";
             $("sTotal").textContent = formatPrice(summary.total);
             $("cartBadge").textContent = summary.count;
+            if ($("mobileCartBadge")) $("mobileCartBadge").textContent = summary.count;
+
             $("orderBtn").disabled = !summary.count;
             $("freeNote").innerHTML = summary.count ? '<div class="free-note">' +
                   (summary.fee ? "ສັ່ງເພີ່ມອີກ " + formatPrice(FREE_FROM - summary.subtotal) + " ເພື່ອສົ່ງຟຣີ" :
@@ -135,7 +137,6 @@
             toggleDrawer(false);
       }
 
-      // 2. ຟັງຊັນ Filter ໝວດໝູ່ ແລະ ຊອກຫາ
       function filterMenu() {
             var activeCat = document.querySelector(".cat.active")?.dataset.cat || "ທັງໝົດ";
             var searchText = $("search").value.trim().toLowerCase();
@@ -184,6 +185,9 @@
             $("clearBtn").onclick = function () { cart = {}; save(KEYS.cart, cart); renderCart(); };
             $("zone").onchange = renderCart;
             $("cartToggle").onclick = function () { toggleDrawer(true); };
+            if ($("mobileCartBtn")) {
+                  $("mobileCartBtn").onclick = function () { toggleDrawer(true); };
+            }
             $("cartClose").onclick = $("scrim").onclick = function () { toggleDrawer(false); };
             $("orderBtn").onclick = placeOrder;
             $("modal").onclick = function (e) { if (e.target === $("modal")) $("modal").classList.remove("open"); };
