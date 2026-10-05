@@ -82,6 +82,7 @@ button {
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--line);
+      padding-top: max(8px, env(safe-area-inset-top));
 }
 
 .top-in {
@@ -274,9 +275,10 @@ button {
 }
 
 .food-pic {
-      height: 160px;
+      height: 140px;
       width: 100%;
       position: relative;
+      overflow: hidden;
 }
 
 .food-pic img {
@@ -382,7 +384,7 @@ button {
       border-bottom: 1px dashed var(--line);
 }
 
-.line > div:nth-child(2) {
+.line>div:nth-child(2) {
       min-width: 0;
       overflow-wrap: anywhere;
 }
@@ -427,6 +429,7 @@ button {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
 
 .field {
@@ -888,6 +891,14 @@ button {
             text-align: center;
             bottom: 16px;
       }
+
+      .field input,
+      .field select,
+      .field textarea,
+      .search {
+            font-size: 16px !important;
+            /* ປ້ອງກັນ Safari Auto-Zoom */
+      }
 }
 
 @media(max-width: 420px) {
@@ -896,7 +907,9 @@ button {
       }
 
       .grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
+            /* ປ່ຽນຈາກ 1fr ເປັນ 2 ຕາຕະລາງ */
+            gap: 8px;
       }
 
       .food-pic {
@@ -908,12 +921,13 @@ button {
       }
 
       .food-foot {
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
+            /* ໃຫ້ປຸ່ມເພີ່ມຢູ່ລຸ່ມລາຄາ */
+            align-items: stretch;
       }
 
       .add {
-            width: auto;
+            width: 100%;
       }
 
       .row2 {
