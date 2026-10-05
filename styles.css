@@ -51,6 +51,13 @@ body {
       overflow-x: hidden;
 }
 
+img,
+svg,
+video {
+      display: block;
+      max-width: 100%;
+}
+
 body {
       background: var(--bg);
       color: var(--ink);
@@ -84,6 +91,7 @@ button {
       display: flex;
       align-items: center;
       gap: 14px;
+      min-width: 0;
 }
 
 .brand {
@@ -258,6 +266,7 @@ button {
       flex-direction: column;
       box-shadow: var(--shadow);
       transition: transform .2s;
+      min-width: 0;
 }
 
 .food:hover {
@@ -293,6 +302,7 @@ button {
       flex-direction: column;
       gap: 6px;
       flex: 1;
+      min-width: 0;
 }
 
 .food h3 {
@@ -370,6 +380,11 @@ button {
       align-items: center;
       padding: 10px 0;
       border-bottom: 1px dashed var(--line);
+}
+
+.line > div:nth-child(2) {
+      min-width: 0;
+      overflow-wrap: anywhere;
 }
 
 .cart-thumb {
@@ -659,6 +674,7 @@ button {
 
       .header-actions {
             gap: 5px;
+            flex-shrink: 0;
       }
 
       .header-link {
@@ -806,6 +822,8 @@ button {
       .cart {
             width: 100%;
             border-left: 0;
+            height: 100vh;
+            height: 100dvh;
       }
 
       .cart-head {
@@ -819,6 +837,20 @@ button {
       .cart-foot {
             padding: 12px;
             gap: 8px;
+            max-height: 62dvh;
+            overflow-y: auto;
+            flex-shrink: 0;
+      }
+
+      .cart-head h2 {
+            font-size: 1.05rem;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+            width: 100%;
+            min-width: 0;
       }
 
       .receipt {
