@@ -73,134 +73,7 @@
           <input class="search" id="search" type="search" placeholder="ຊອກຫາເມນູ…" aria-label="ຊອກຫາເມນູ">
         </div>
 
-        <div class="grid" id="grid">
-          
-          <!-- ກ່ອງທີ 1 -->
-          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
-            <div class="food-pic">
-              <small>ອາຫານຈານດ່ຽວ</small>
-              <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80" alt="ເຝີໄກ່" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ເຝີໄກ່</h3>
-              <p class="desc">ນ້ຳຊຸບໃສ ເສັ້ນນຸ້ມ ໃສ່ຜັກສົດ</p>
-              <div class="food-foot">
-                <span class="price">30,000 ₭</span>
-                <button class="add" onclick="addToCart(1, 'ເຝີໄກ່', 30000, 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ກ່ອງທີ 2 -->
-          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
-            <div class="food-pic">
-              <small>ອາຫານຈານດ່ຽວ</small>
-              <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="ເຂົ້າປຽກເສັ້ນ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ເຂົ້າປຽກເສັ້ນ</h3>
-              <p class="desc">ເສັ້ນເຮັດເອງ ນ້ຳຊຸບຂຸ້ນ ຫອມກະທຽມຈຽວ</p>
-              <div class="food-foot">
-                <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(2, 'ເຂົ້າປຽກເສັ້ນ', 28000, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ກ່ອງທີ 3 -->
-          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
-            <div class="food-pic">
-              <small>ອາຫານຈານດ່ຽວ</small>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCjDrHHIMZ1p3EZ6Hr3fS9BvGVrQmg87ammEbBgVYxhlG2q0gY72shRTSY&s=10" alt="ລາບໄກ່ + ເຂົ້າໜຽວ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ລາບໄກ່</h3>
-              <p class="desc">ລາບໄກ່ເຜັດກຳລັງດີ</p>
-              <div class="food-foot">
-                <span class="price">35,000 ₭</span>
-                <button class="add" onclick="addToCart(3, 'ລາບໄກ່', 35000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCjDrHHIMZ1p3EZ6Hr3fS9BvGVrQmg87ammEbBgVYxhlG2q0gY72shRTSY&s=10')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ກ່ອງທີ 4 -->
-          <article class="food" data-cat="ເຄື່ອງດື່ມ">
-            <div class="food-pic">
-              <small>ເຄື່ອງດື່ມ</small>
-              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80" alt="ກາເຟເຢັນລາວ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ກາເຟເຢັນລາວ</h3>
-              <p class="desc">ກາເຟປາກຊ່ອງ ນົມຂຸ້ນຫວານ</p>
-              <div class="food-foot">
-                <span class="price">18,000 ₭</span>
-                <button class="add" onclick="addToCart(4, 'ກາເຟເຢັນລາວ', 18000, 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ກ່ອງທີ 5 -->
-          <article class="food" data-cat="ຂອງຫວານ">
-            <div class="food-pic">
-              <small>ຂອງຫວານ</small>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDn0BC7VR2c5-d3AsjmH1HfDjva1uMZrVpo8ctBTZNXQ&s=10" alt="ເຂົ້າໜຽວໝາກມ່ວງ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ເຂົ້າໜຽວໝາກມ່ວງ</h3>
-              <p class="desc">ໝາກມ່ວງສຸກ ເຂົ້າໜຽວກະທິ</p>
-              <div class="food-foot">
-                <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(5, 'ເຂົ້າໜຽວໝາກມ່ວງ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDn0BC7VR2c5-d3AsjmH1HfDjva1uMZrVpo8ctBTZNXQ&s=10')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="food" data-cat="ອາຫານຈານດ່ຽວ">
-            <div class="food-pic">
-              <small>ອາຫານຈານດ່ຽວ</small>
-              <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="ສະລັດຜັກ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ສະລັດຜັກ</h3>
-              <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
-              <div class="food-foot">
-                <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(6, 'ສະລັດຜັກ', 28000, 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="food" data-cat="ຂອງຫວານ">
-            <div class="food-pic">
-              <small>ຂອງຫວານ</small>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10" alt="ກະເເລັມສະຕໍເບີລີ້" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ກະເເລັມສະຕໍເບີລີ້</h3>
-              <p class="desc">ຫອມຫວານເເຊບ</p>
-              <div class="food-foot">
-                <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(7, 'ກະແລັມສະຕໍເບີລີ້', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS--q3FVEVC8QmNPu1NjoTnR9ThwtZHAkWD-e7TR835TG8iUBLUao3j7U&s=10')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="food" data-cat="ຂອງຫວານ">
-            <div class="food-pic">
-              <small>ຂອງຫວານ</small>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s" alt="ໄອສະຄີມຊາຂຽວ" loading="lazy">
-            </div>
-            <div class="food-body">
-              <h3>ໄອສະຄີມຊາຂຽວ</h3>
-              <p class="desc">ເເຊບເພື່ອສຸຂະພາບ</p>
-              <div class="food-foot">
-                <span class="price">28,000 ₭</span>
-                <button class="add" onclick="addToCart(8, 'ໄອສະຄີມຊາຂຽວ', 28000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2wOckmVLOpvZeHplIi1ap-uYnJDAoU3HYeGqLHTwmw&s')">+ ເພີ່ມ</button>
-              </div>
-            </div>
-          </article>
-
-        </div>
+        <div class="grid" id="grid"></div>
       </section>
 
       <!-- Cart Drawer -->
@@ -286,6 +159,7 @@
     </a>
   </nav>
 
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 

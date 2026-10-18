@@ -30,6 +30,21 @@
             toastTimer = setTimeout(function () { $("toast").classList.remove("show"); }, 1800);
       }
 
+      // ສ້າງກາດອາຫານຈາກ data.js
+      // ອະນາຄົດສາມາດປ່ຽນ FOOD_ITEMS ເປັນຂໍ້ມູນຈາກ API ໄດ້ໂດຍບໍ່ຕ້ອງແກ້ HTML
+      function renderMenu() {
+            var items = Array.isArray(window.FOOD_ITEMS) ? window.FOOD_ITEMS : [];
+            $("grid").innerHTML = items.map(function (item) {
+                  return '<article class="food" data-id="' + item.id + '" data-cat="' + escapeHtml(item.category) + '">' +
+                        '<div class="food-pic"><small>' + escapeHtml(item.category) + '</small>' +
+                        '<img src="' + escapeHtml(item.image) + '" alt="' + escapeHtml(item.name) + '" loading="lazy"></div>' +
+                        '<div class="food-body"><h3>' + escapeHtml(item.name) + '</h3>' +
+                        '<p class="desc">' + escapeHtml(item.description) + '</p>' +
+                        '<div class="food-foot"><span class="price">' + formatPrice(item.price) + '</span>' +
+                        '<button class="add" type="button" data-add="' + item.id + '">+ ເພີ່ມ</button></div></div></article>';
+            }).join("");
+      }
+
       // 1. ຟັງຊັນເພີ່ມສິນຄ້າຈາກ HTML Card
       window.addToCart = function (id, name, price, image) {
             if (!cart[id]) {
@@ -144,9 +159,9 @@
 
             cards.forEach(function (card) {
                   var cat = card.dataset.cat;
-                  var title = card.querySelector("h3").textContent.toLowerCase();
+                  var cardText = card.textContent.toLowerCase();
                   var matchCat = (activeCat === "ທັງໝົດ" || cat === activeCat);
-                  var matchSearch = (!searchText || title.includes(searchText));
+                  var matchSearch = (!searchText || cardText.includes(searchText));
 
                   if (matchCat && matchSearch) {
                         card.style.display = "";
@@ -174,6 +189,15 @@
             };
 
             $("search").oninput = filterMenu;
+
+            $("grid").onclick = function (e) {
+                  var button = e.target.closest("[data-add]");
+                  if (!button) return;
+                  var item = (window.FOOD_ITEMS || []).find(function (food) {
+                        return String(food.id) === button.dataset.add;
+                  });
+                  if (item) window.addToCart(item.id, item.name, item.price, item.image);
+            };
 
             $("cartList").onclick = function (e) {
                   var inc = e.target.closest("[data-inc]");
@@ -203,6 +227,7 @@
             var theme = load(KEYS.theme, null);
             if (theme) document.documentElement.setAttribute("data-theme", theme);
             ["inName", "inPhone", "inAddr"].forEach(function (id) { if (form[id] && $(id)) $(id).value = form[id]; });
+            renderMenu();
             bindEvents();
             renderCart();
       }
