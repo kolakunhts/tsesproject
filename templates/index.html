@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>078food · ສັ່ງອາຫານສົ່ງເຖິງເຮືອນ</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Noto+Serif+Lao:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS Style Sheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=5">
+</head>
+
+<body data-authenticated="{{ 'true' if current_user.is_authenticated else 'false' }}">
+  <div id="app">
+    <!-- Header / Navbar -->
+    <header class="top" id="home">
+      <div class="top-in">
+        <a href="{{ url_for('home') }}" class="brand"><i class="fa-solid fa-bowl-food" aria-hidden="true"></i><span>078food</span></a>
+
+        <nav class="header-nav" aria-label="ການນຳທາງ">
+          <a class="header-link active" href="#home" aria-label="ໜ້າຫຼັກ" title="ໜ້າຫຼັກ"><i class="fa-solid fa-house" aria-hidden="true"></i><span>ໜ້າຫຼັກ</span></a>
+          <a class="header-link" href="#menu-section" aria-label="ເມນູອາຫານ" title="ເມນູອາຫານ"><i class="fa-solid fa-utensils" aria-hidden="true"></i><span>ເມນູອາຫານ</span></a>
+          {% if current_user.is_authenticated %}
+            <a class="header-link" href="{{ url_for('my_orders') }}" aria-label="ປະຫວັດອໍເດີ" title="ປະຫວັດອໍເດີ"><i class="fa-solid fa-receipt" aria-hidden="true"></i><span>ປະຫວັດອໍເດີ</span></a>
+          {% else %}
+            <a class="header-link" href="#menu-section" aria-label="ການສັ່ງຊື້" title="ການສັ່ງຊື້"><i class="fa-solid fa-receipt" aria-hidden="true"></i><span>ການສັ່ງຊື້</span></a>
+          {% endif %}
+          <a class="header-link" href="#contact" aria-label="ກ່ຽວກັບພວກເຮົາ" title="ກ່ຽວກັບພວກເຮົາ"><i class="fa-solid fa-users" aria-hidden="true"></i><span>ກ່ຽວກັບພວກເຮົາ</span></a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="icon-btn mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="ເປີດເມນູ" aria-expanded="false" title="ເມນູ">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+          </button>
+          {% if current_user.is_authenticated %}
+            <div class="user-action-group">
+              <div class="account-menu-wrap">
+                <button class="icon-btn user-btn account-toggle" id="accountToggle" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu" title="ບັນຊີຂອງຂ້ອຍ">
+                  <i class="fa-solid fa-user-check"></i>
+                  <span class="user-name-text">{{ current_user.username }}</span>
+                  <i class="fa-solid fa-chevron-down account-chevron" aria-hidden="true"></i>
+                </button>
+                <div class="account-menu" id="accountMenu" role="menu" hidden>
+                  <div class="account-menu-head"><strong>{{ current_user.username }}</strong><small>{{ current_user.email }}</small></div>
+                  <a role="menuitem" href="{{ url_for('account') }}"><i class="fa-solid fa-user-pen"></i> ຂໍ້ມູນສ່ວນຕົວ</a>
+                  <a role="menuitem" href="{{ url_for('account') }}#addresses"><i class="fa-solid fa-location-dot"></i> ທີ່ຢູ່ຈັດສົ່ງ</a>
+                  <a role="menuitem" href="{{ url_for('my_orders') }}"><i class="fa-solid fa-receipt"></i> ປະຫວັດອໍເດີ</a>
+                  <form method="POST" action="{{ url_for('logout') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" role="menuitem"><i class="fa-solid fa-arrow-right-from-bracket"></i> ອອກຈາກລະບົບ</button>
+                  </form>
+                </div>
+              </div>
+              {% if current_user.role == 'admin' %}
+                <a class="icon-btn admin-btn" href="{{ url_for('admin_dashboard') }}" aria-label="ຈັດການຮ້ານ Admin" title="ຈັດການຮ້ານ Admin">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </a>
+              {% endif %}
+            </div>
+          {% else %}
+            <a class="icon-btn login-btn" href="{{ url_for('login') }}" aria-label="ເຂົ້າສູ່ລະບົບ" title="ເຂົ້າສູ່ລະບົບ">
+              <i class="fa-solid fa-user"></i>
+              <span class="login-btn-text">ເຂົ້າສູ່ລະບົບ</span>
+            </a>
+            <a class="register-btn" href="{{ url_for('register') }}">ລົງທະບຽນ</a>
+          {% endif %}
+
+          <button class="icon-btn cart-toggle" id="cartToggle" aria-label="ເປີດກະຕ່າ" aria-expanded="false" title="ເປີດກະຕ່າ">
+            <i class="fa-solid fa-cart-shopping"></i> <span class="badge" id="cartBadge">0</span>
+            <span class="cart-total-display" id="headerCartTotal">0 ₭</span>
+          </button>
+          <button class="icon-btn" id="themeBtn" aria-label="ປ່ຽນໂໝດສີ" title="ປ່ຽນໂໝດສີ">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Banner Wrapper -->
+    <div class="hero-wrapper">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="hero-kicker"><i class="fa-solid fa-sparkles"></i> ລົດຊາດລາວ · ສົ່ງເຖິງບ້ານ</span>
+          <h1>ຄວາມແຊບທີ່ຄຸ້ນເຄີຍ<br><em>ສົ່ງເຖິງມືທ່ານ.</em></h1>
+          <p>ອາຫານລາວຄຸນນະພາບດີ ປຸງໃໝ່ທຸກອໍເດີ ແລະຈັດສົ່ງໄວເຖິງບ້ານ.</p>
+          <div class="hero-actions">
+            <a class="hero-primary" href="#menu-section"><i class="fa-solid fa-utensils"></i> ເລືອກອາຫານ</a>
+            <span class="hero-note"><i class="fa-solid fa-clock"></i> ສົ່ງໃນ 30 ນາທີ</span>
+          </div>
+          <div class="hero-trust">
+            <span><i class="fa-solid fa-circle-check"></i> ປຸງສົດທຸກມື້</span>
+            <span><i class="fa-solid fa-motorcycle"></i> ສົ່ງໄວ</span>
+            <span><i class="fa-solid fa-shield-heart"></i> ໃສ່ໃຈທຸກອໍເດີ</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-orbit orbit-one"></div>
+          <div class="hero-orbit orbit-two"></div>
+          <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=85" alt="">
+          <div class="hero-floating-card"><strong>ສົ່ງຟຣີ</strong><span>ສຳລັບອໍເດີ 200,000 ₭+</span></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Main Content Layout -->
+    <main class="layout">
+      <section id="menu-section" aria-label="ເມນູອາຫານ">
+        <div class="section-heading">
+          <div>
+            <span class="section-eyebrow">ເມນູຂອງພວກເຮົາ</span>
+            <h2>ເລືອກຄວາມແຊບຂອງທ່ານ</h2>
+          </div>
+          <p>ອາຫານຈານໂປດ ແລະເຄື່ອງດື່ມຄັດສັນພິເສດ.</p>
+          <span class="menu-count" id="menuCount" aria-live="polite">ກຳລັງໂຫຼດເມນູ...</span>
+        </div>
+        <div class="tools">
+          <div class="cats" id="cats" role="group" aria-label="ໝວດໝູ່ອາຫານ">
+            <span class="categories-loading">ກຳລັງໂຫຼດໝວດອາຫານ...</span>
+          </div>
+          <label class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input class="search" id="search" type="search" placeholder="ຊອກຫາເມນູ…" aria-label="ຊອກຫາເມນູ">
+          </label>
+        </div>
+
+        <div class="grid" id="grid"></div>
+      </section>
+
+      <!-- Cart Drawer -->
+      <aside class="cart" id="cart" aria-label="ກະຕ່າສິນຄ້າ" aria-hidden="true">
+        <div class="cart-head">
+          <div class="cart-title-wrap">
+            <span class="cart-eyebrow"><i class="fa-solid fa-cart-shopping"></i> 078food</span>
+            <h2>ກະຕ່າສັ່ງອາຫານ</h2>
+            <span class="cart-count-label"><span id="cartItemCount">0</span> ລາຍການ</span>
+          </div>
+          <button class="icon-btn cart-close" id="cartClose" type="button" aria-label="ປິດກະຕ່າ">✕</button>
+        </div>
+        <div class="cart-scroll" id="cartList"></div>
+        <div class="cart-foot" id="cartFoot">
+          <div class="checkout-kicker"><i class="fa-solid fa-receipt"></i> ສະຫຼຸບລາຄາ</div>
+          <div class="sum"><span>ລາຄາອາຫານ (<span id="cartLineCount">0</span> ລາຍການ)</span><span id="sSub">0 ₭</span></div>
+          <div class="sum"><span>ຄ່າຈັດສົ່ງ</span><span id="sFee">0 ₭</span></div>
+          <div id="freeNote"></div>
+          <div class="sum total"><span>ລວມທັງໝົດ</span><span id="sTotal">0 ₭</span></div>
+          {% if current_user.is_authenticated %}
+            <div class="cart-auth-box logged-in">
+              <div class="cart-auth-info">
+                <i class="fa-solid fa-circle-check"></i>
+                <div>
+                  <strong>{{ current_user.username }}</strong>
+                  <small>ອໍເດີນີ້ຈະຖືກບັນທຶກໃສ່ບັນຊີທ່ານອັດຕະໂນມັດ</small>
+                </div>
+              </div>
+              <a href="{{ url_for('my_orders') }}" class="cart-orders-link">ເບິ່ງອໍເດີ</a>
+            </div>
+          {% else %}
+            <div class="cart-auth-box guest" id="authGate">
+              <div class="cart-auth-info">
+                <i class="fa-solid fa-circle-user"></i>
+                <div>
+                  <strong>ສັ່ງຊື້ແບບທົ່ວໄປ (Guest)</strong>
+                  <small>ຫຼື ເຂົ້າສູ່ລະບົບ ເພື່ອບັນທຶກປະຫວັດໄວ້ໃນບັນຊີ</small>
+                </div>
+              </div>
+              <a href="{{ url_for('login', next='/?open_cart=1') }}" class="auth-gate-link">ເຂົ້າສູ່ລະບົບ</a>
+            </div>
+          {% endif %}
+          <div class="checkout-card recipient-card">
+            <div class="checkout-card-head"><i class="fa-solid fa-user"></i><span>ຂໍ້ມູນຜູ້ຮັບ</span></div>
+            <label class="field" id="fName">ຊື່ຜູ້ຮັບ
+            <input id="inName" autocomplete="name" placeholder="ເຊັ່ນ ສົມຊາຍ ວົງດາລາ" value="{{ (customer.full_name if customer and customer.full_name else current_user.username) if current_user.is_authenticated else '' }}">
+            <span class="err-msg">ກະລຸນາໃສ່ຊື່</span>
+            </label>
+            <label class="field" id="fPhone">ເບີໂທ
+            <input id="inPhone" inputmode="tel" autocomplete="tel" placeholder="020 xxxx xxxx" value="{{ customer.phone if customer and customer.phone else '' }}">
+            <span class="err-msg">ກະລຸນາໃສ່ເບີໂທ (ຢ່າງໜ້ອຍ 8 ຕົວເລກ)</span>
+            </label>
+          </div>
+          <div class="checkout-card address-card">
+            <div class="checkout-card-head"><i class="fa-solid fa-location-dot"></i><span>ທີ່ຢູ່ຈັດສົ່ງ</span></div>
+            <label class="field" id="fAddr">
+            <textarea id="inAddr" rows="2" placeholder="ບ້ານ, ຖະໜົນ, ຈຸດສັງເກດ"></textarea>
+            <span class="err-msg">ກະລຸນາໃສ່ທີ່ຢູ່ຈັດສົ່ງ</span>
+            </label>
+            {% if current_user.is_authenticated and addresses %}
+            <label class="field saved-address-select">ໃຊ້ທີ່ຢູ່ທີ່ບັນທຶກໄວ້
+              <select id="savedAddress" aria-label="ເລືອກທີ່ຢູ່ທີ່ບັນທຶກໄວ້">
+                <option value="">ເລືອກທີ່ຢູ່...</option>
+                {% for address in addresses %}
+                <option value="{{ address.id }}" data-name="{{ address.recipient_name }}" data-phone="{{ address.recipient_phone }}" data-address="{{ address.address_line }}{% if address.district %}, {{ address.district }}{% endif %}{% if address.province %}, {{ address.province }}{% endif %}" {% if address.is_default %}selected{% endif %}>{{ address.recipient_name }} · {{ address.address_line }}{% if address.is_default %} · ຫຼັກ{% endif %}</option>
+                {% endfor %}
+              </select>
+            </label>
+            {% endif %}
+          </div>
+          <div class="checkout-section-label"><span>02</span> ການຈັດສົ່ງ ແລະຊຳລະ</div>
+          <div class="checkout-options row2">
+            <label class="field"><span class="field-label"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> ເຂດຈັດສົ່ງ</span>
+              <select id="zone">
+                <option value="10000">ໃນເມືອງ (10,000 ₭)</option>
+                <option value="20000">ນອກເມືອງ (20,000 ₭)</option>
+              </select>
+            </label>
+            <label class="field"><span class="field-label"><i class="fa-solid fa-credit-card" aria-hidden="true"></i> ການຊຳລະ</span>
+              <select id="pay">
+                <option>ເງິນສົດປາຍທາງ</option>
+                <option>ໂອນ / QR</option>
+                <option>Stripe Test Card</option>
+              </select>
+            </label>
+          </div>
+          <div class="checkout-warning"><i class="fa-solid fa-lock"></i><span>ກະລຸນາກວດສອບຂໍ້ມູນກ່ອນຢືນຢັນ</span></div>
+          <button class="order-btn" id="orderBtn"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span>ສັ່ງຊື້ເລີຍ</span></button>
+          <button class="clear-cart-btn" id="clearBtn" type="button"><i class="fa-regular fa-trash-can"></i> ລ້າງກະຕ່າ</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="backdrop" id="transferModal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+    <div class="transfer-dialog">
+      <button class="transfer-close" id="transferClose" type="button" aria-label="ປິດ">✕</button>
+      <h2 id="transferTitle">ໂອນເງິນເພື່ອຢືນຢັນອໍເດີ</h2>
+      <p class="transfer-dialog-note">ສະແກນ QR ແລ້ວໂອນຕາມຍອດລວມດ້ານລຸ່ມ.</p>
+      <img class="transfer-qr" src="{{ url_for('static', filename='mock-bank-qr.svg') }}" alt="QR ສຳລັບໂອນເງິນ">
+      <div class="transfer-account">
+        <strong>Test Bank</strong>
+        <span>ເລກບັນຊີ: 000-000-000</span>
+        <span>ຊື່ບັນຊີ: 078food Test</span>
+      </div>
+      <div class="transfer-total">ຍອດທີ່ຕ້ອງໂອນ: <strong id="transferTotal">0 ₭</strong></div>
+      <p class="transfer-dialog-warning">ຫຼັງຈາກໂອນສຳເລັດ ກົດປຸ່ມດ້ານລຸ່ມເພື່ອສ້າງໃບບິນ.</p>
+      <div class="transfer-actions">
+        <button type="button" class="transfer-cancel" id="transferCancel">ຍົກເລີກ</button>
+        <button type="button" class="transfer-confirm" id="transferConfirm">ໂອນສຳເລັດ · ສ້າງໃບບິນ</button>
+      </div>
+    </div>
+  </div>
+  <div class="backdrop" id="modal" role="dialog" aria-modal="true">
+    <div class="receipt" id="receipt"></div>
+  </div>
+
+  <!-- Footer Wrapper -->
+  <div class="site-footer-wrapper" id="contact">
+    <footer class="site-footer">
+      <div class="footer-brand"><strong>078food</strong><span>ຄວາມແຊບລາວ ສົ່ງເຖິງບ້ານ.</span></div>
+      <div class="footer-contact"><strong>ຕິດຕໍ່ພວກເຮົາ</strong><span>📞 <a href="tel:02055551234">020 5555 1234</a></span><span>📍 ວຽງຈັນ, ລາວ</span></div>
+      <div class="footer-hours"><strong>ເວລາເປີດ</strong><span>ທຸກມື້ 09:00–21:00</span><small>ພ້ອມຮັບອໍເດີທຸກມື້</small></div>
+    </footer>
+  </div>
+
+  <!-- Bottom Navigation Bar ສຳລັບມືຖື -->
+  <nav class="mobile-bottom-nav" aria-label="ການນຳທາງລຸ່ມ">
+    <a href="#home" class="bottom-nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>ໜ້າຫຼັກ</span>
+    </a>
+    <a href="#menu-section" class="bottom-nav-item">
+      <i class="fa-solid fa-utensils"></i>
+      <span>ເມນູ</span>
+    </a>
+    <button class="bottom-nav-item cart-toggle-btn" id="mobileCartBtn" aria-expanded="false">
+      <div class="icon-wrap">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="mobileCartBadge">0</span>
+      </div>
+      <span>ກະຕ່າ</span>
+    </button>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('my_orders') }}" class="bottom-nav-item">
+        <i class="fa-solid fa-receipt"></i>
+        <span>ອໍເດີຂ້ອຍ</span>
+      </a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="bottom-nav-item">
+        <i class="fa-solid fa-user"></i>
+        <span>ເຂົ້າລະບົບ</span>
+      </a>
+    {% endif %}
+    <a href="#contact" class="bottom-nav-item">
+      <i class="fa-solid fa-phone"></i>
+      <span>ຕິດຕໍ່</span>
+    </a>
+  </nav>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+
+</html>

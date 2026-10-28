@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ຈັດການໝວດໝູ່ | 078food</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans Lao', system-ui, sans-serif;
+      background: #f4f6fa;
+      margin: 0;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 16px 5%; background: #1e2433; color: white; position: sticky; top: 0; z-index: 20;
+    }
+    .topbar-brand { color: #f6ad55; font-size: 1.35rem; font-weight: 700; text-decoration: none; }
+    .topbar-nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+      color: #e2e8f0; text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      background: rgba(255, 255, 255, 0.08); border: 0; cursor: pointer; font-family: inherit;
+    }
+    .nav-btn:hover, .nav-btn.active { background: #16834a; color: white; }
+    .container { max-width: 960px; margin: auto; padding: 24px 20px 50px; }
+    .panel {
+      background: white; padding: 22px; margin-bottom: 20px; border-radius: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    label { display: block; font-weight: 600; font-size: 0.88rem; }
+    input, textarea, button {
+      box-sizing: border-box; width: 100%; padding: 11px; margin-top: 6px; margin-bottom: 12px; font: inherit;
+    }
+    input, textarea { border: 1px solid #cbd5e1; border-radius: 8px; }
+    button, .link {
+      background: #16834a; color: white; border: 0; border-radius: 8px; cursor: pointer;
+      padding: 9px 14px; text-decoration: none; font-weight: 600; font-size: 0.88rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f8fafc; color: #475569; font-size: 0.83rem; }
+    .message { padding: 12px 14px; background: #dcfce7; color: #166534; border-radius: 8px; font-weight: 600; }
+    .message.error { background: #fee2e2; color: #991b1b; }
+    .delete { background: #c62828; }
+    .actions { display: flex; gap: 8px; align-items: center; }
+    .actions form { margin: 0; }
+    .actions button { width: auto; margin: 0; }
+    .count-pill { display: inline-block; padding: 2px 9px; border-radius: 99px; background: #f1f5f9; color: #334155; font-size: 0.8rem; font-weight: 600; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="{{ url_for('admin_dashboard') }}" class="topbar-brand">🍲 078food Admin</a>
+    <nav class="topbar-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">📊 ພາບລວມ</a>
+      <a href="{{ url_for('admin_orders') }}" class="nav-btn">📋 ອໍເດີ</a>
+      <a href="{{ url_for('admin_products') }}" class="nav-btn">🍲 ເມນູອາຫານ</a>
+      <a href="{{ url_for('admin_categories') }}" class="nav-btn active">📁 ໝວດໝູ່</a>
+      <a href="{{ url_for('home') }}" class="nav-btn">🏠 ໜ້າຮ້ານ</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>ຈັດການໝວດໝູ່ອາຫານ</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <p class="message {{ category }}">{{ message }}</p>
+    {% endfor %}
+    {% endwith %}
+
+    <section class="panel">
+      <h2 style="margin-top:0;">+ ເພີ່ມໝວດໝູ່ໃໝ່</h2>
+      <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="name">ຊື່ໝວດໝູ່ *</label>
+        <input id="name" name="name" required maxlength="100" placeholder="ຕົວຢ່າງ: ອາຫານຈານດຽວ">
+
+        <label for="description">ລາຍລະອຽດ</label>
+        <textarea id="description" name="description" rows="2" placeholder="ລາຍລະອຽດໝວດໝູ່"></textarea>
+
+        <button type="submit" style="width:auto;">+ ເພີ່ມໝວດໝູ່</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2 style="margin-top:0;">ໝວດໝູ່ທັງໝົດ ({{ categories|length }})</h2>
+
+      {% if categories %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ຊື່ໝວດໝູ່</th>
+            <th>ລາຍລະອຽດ</th>
+            <th>ຈຳນວນເມນູ</th>
+            <th>ຈັດການ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in categories %}
+          <tr>
+            <td>#{{ item.id }}</td>
+            <td><strong>{{ item.name }}</strong></td>
+            <td>{{ item.description or "—" }}</td>
+            <td><span class="count-pill">{{ item.product_count or 0 }} ລາຍການ</span></td>
+            <td>
+              <div class="actions">
+                <a class="link" href="{{ url_for('admin_edit_category', category_id=item.id) }}">ແກ້ໄຂ</a>
+                <form method="POST"
+                      action="{{ url_for('admin_delete_category', category_id=item.id) }}"
+                      onsubmit="return confirm('ຢືນຢັນການລຶບໝວດໝູ່ນີ້?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="delete" type="submit">ລຶບ</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>ຍັງບໍ່ມີໝວດໝູ່. ເຈົ້າສາມາດເພີ່ມໝວດໝູ່ຈາກຟອມດ້ານເທິງໄດ້.</p>
+      {% endif %}
+    </section>
+  </div>
+</body>
+
+</html>

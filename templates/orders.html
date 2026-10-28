@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>ປະຫວັດອໍເດີ | 078food</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Noto+Serif+Lao:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #FAF9F6;
+      --card: #FFFFFF;
+      --ink: #2B2523;
+      --muted: #6F6663;
+      --green: #2D5A27;
+      --green-dark: #22461e;
+      --green-light: rgba(45, 90, 39, 0.08);
+      --line: #E6E2D8;
+      --danger: #B3402A;
+      --shadow: 0 2px 12px rgba(74, 62, 61, 0.06);
+      --font: 'Noto Sans Lao', system-ui, -apple-system, sans-serif;
+      --font-d: 'Noto Serif Lao', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      line-height: 1.6;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-in {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-d);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    .brand i {
+      font-style: normal;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--green);
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: var(--font);
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      transition: background .15s;
+    }
+
+    .btn-nav:hover {
+      background: var(--bg);
+    }
+
+    .btn-logout {
+      color: var(--danger);
+      border-color: #FCA5A5;
+      background: #FEF2F2;
+    }
+
+    .btn-logout:hover {
+      background: #FEE2E2;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+
+    .page-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .page-title h1 {
+      font-size: 1.5rem;
+      color: var(--ink);
+    }
+
+    .page-title p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .orders-wrapper {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: #F9F8F5;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.92rem;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #FAF9F6;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-paid {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .badge-pending {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .badge-cancelled {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .badge-completed {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .badge-shipped,
+    .badge-processing {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .invoice-id {
+      font-family: monospace;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .total-price {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .empty-card {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-card i {
+      font-size: 3rem;
+      color: var(--muted);
+      opacity: 0.5;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .empty-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .empty-card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+    }
+
+    .btn-order-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: background .2s;
+    }
+
+    .btn-order-now:hover {
+      background: var(--green-dark);
+    }
+
+    .btn-action-slip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--green);
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s;
+    }
+
+    .btn-action-slip:hover {
+      background: var(--green-dark);
+    }
+
+    .slip-status-sent {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--green);
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .payment-done-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #166534;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .backdrop-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: grid;
+      place-items: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .slip-dialog {
+      background: #fff;
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .slip-dialog h2 {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .slip-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f0eee5;
+      border: 0;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal-qr-box {
+      text-align: center;
+      background: #FAF9F6;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 14px 0;
+    }
+
+    .slip-file-input {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .slip-file-input input {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      font-family: inherit;
+    }
+
+    .btn-modal-cancel {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-modal-submit {
+      flex: 1;
+      padding: 10px;
+      border: 0;
+      background: var(--green);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-modal-submit:hover {
+      background: var(--green-dark);
+    }
+
+    .mobile-bottom-nav {
+      display: none;
+    }
+
+    /* Mobile Stacked Order Cards & Bottom Nav */
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+      }
+      header {
+        padding: 10px 14px;
+      }
+      .header-in {
+        gap: 8px;
+      }
+      .brand {
+        font-size: 1.15rem;
+        gap: 8px;
+      }
+      .brand i {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+      }
+      .header-actions {
+        gap: 6px;
+      }
+      .btn-nav {
+        padding: 7px 10px;
+        font-size: 0.8rem;
+      }
+      .page-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .btn-order-now {
+        width: 100%;
+        justify-content: center;
+      }
+      .orders-wrapper {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+      thead {
+        display: none;
+      }
+      tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      tbody tr {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px;
+        box-shadow: var(--shadow);
+      }
+      tbody tr:hover td {
+        background: transparent;
+      }
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px dashed var(--line);
+        text-align: right;
+      }
+      td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      td:first-child {
+        padding-top: 0;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        font-size: 0.82rem;
+        color: var(--muted);
+        text-align: left;
+        flex-shrink: 0;
+      }
+      .order-items-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+      }
+
+      /* Mobile Bottom Navigation Bar */
+      .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        min-height: 62px;
+        height: calc(62px + env(safe-area-inset-bottom, 0px));
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        z-index: 90;
+        justify-content: space-around;
+        align-items: center;
+        padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+      }
+      .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: #64748b;
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: none;
+        padding: 4px 2px;
+        flex: 1 1 0%;
+        min-width: 0;
+        height: 100%;
+        white-space: nowrap;
+      }
+      .bottom-nav-item i {
+        font-size: 1.15rem;
+      }
+      .bottom-nav-item.active {
+        color: var(--green);
+        font-weight: 700;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .btn-nav span {
+        display: none;
+      }
+      .btn-nav {
+        padding: 8px 10px;
+      }
+    }
+
+    .order-flash-messages {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .order-flash {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .order-flash.success {
+      background: #DCFCE7;
+      color: #166534;
+      border: 1px solid #86EFAC;
+    }
+    .order-flash.error {
+      background: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+    }
+    .btn-cancel-order {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #FCA5A5;
+      background: #FEF2F2;
+      color: var(--danger);
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-cancel-order:hover {
+      background: #FEE2E2;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-in">
+      <a href="{{ url_for('home') }}" class="brand">
+        <i>🍲</i>078food
+      </a>
+      <div class="header-actions">
+        <a href="{{ url_for('home') }}" class="btn-nav">
+          <i class="fa-solid fa-house"></i>
+          <span>ໜ້າຫຼັກ</span>
+        </a>
+        <a href="{{ url_for('account') }}" class="btn-nav">
+          <i class="fa-solid fa-user"></i>
+          <span>ບັນຊີຂອງຂ້ອຍ</span>
+        </a>
+        <form method="POST" action="{{ url_for('logout') }}" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn-nav btn-logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>ອອກລະບົບ</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-title">
+      <div>
+        <h1>ປະຫວັດການສັ່ງຊື້</h1>
+        <p>ສະບາຍດີ, <strong>{{ current_user.username }}</strong> · ລາຍການອໍເດີທັງໝົດຂອງທ່ານ</p>
+      </div>
+      <a href="{{ url_for('home') }}#menu-section" class="btn-order-now">
+        <i class="fa-solid fa-plus"></i> ສັ່ງອາຫານເພີ່ມ
+      </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="order-flash-messages">
+          {% for category, message in messages %}
+            <div class="order-flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="orders-wrapper">
+      {% if orders %}
+        <table>
+          <thead>
+            <tr>
+              <th>ເລກທີອໍເດີ</th>
+              <th>ລາຍການ</th>
+              <th>ຍອດລວມ</th>
+              <th>ການຊຳລະ</th>
+              <th>ສະຖານະອໍເດີ</th>
+              <th>ວັນທີສັ່ງຊື້</th>
+              <th>ຜູ້ຮັບ</th>
+              <th>ຈັດການ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              <tr>
+                <td data-label="ເລກທີອໍເດີ">
+                  <span class="invoice-id">{{ order.invoice_number }}</span>
+                </td>
+                <td data-label="ລາຍການ">
+                  <div class="order-items-list">
+                    {% for item in order['items'] %}<span>{{ item.product_name }} × {{ item.quantity }}</span>{% endfor %}
+                  </div>
+                </td>
+                <td data-label="ຍອດລວມ">
+                  <span class="total-price">{{ "{:,}".format(order.total_amount) }} ₭</span>
+                </td>
+                <td data-label="ການຊຳລະ">
+                  {% if order.payment_status == 'paid' %}
+                    <span class="badge badge-paid"><i class="fa-solid fa-circle-check"></i> ຈ່າຍແລ້ວ</span>
+                  {% elif order.payment_status == 'refunded' %}
+                    <span class="badge badge-cancelled"><i class="fa-solid fa-rotate-left"></i> ຄືນເງິນແລ້ວ</span>
+                  {% elif order.order_status == 'cancelled' or order.payment_status == 'failed' %}
+                    <span class="badge badge-cancelled"><i class="fa-solid fa-circle-xmark"></i> ຍົກເລີກ/ບໍ່ສຳເລັດ</span>
+                  {% elif order.payment_status == 'pending' and order.payment_method == 'cash' %}
+                    <span class="badge badge-pending"><i class="fa-solid fa-money-bill-wave"></i> ຊຳລະປາຍທາງ</span>
+                  {% elif order.payment_status == 'pending' %}
+                    <span class="badge badge-pending"><i class="fa-solid fa-clock"></i> ລໍຖ້າກວດສອບ</span>
+                  {% else %}
+                    <span class="badge badge-cancelled">{{ order.payment_status }}</span>
+                  {% endif %}
+                </td>
+                <td data-label="ສະຖານະອໍເດີ">
+                  {% if order.order_status == 'pending' %}
+                    <span class="badge badge-pending"><i class="fa-solid fa-clock"></i> ລໍຖ້າຢືນຢັນ</span>
+                  {% elif order.order_status == 'confirmed' %}
+                    <span class="badge badge-processing"><i class="fa-solid fa-circle-check"></i> ຢືນຢັນແລ້ວ</span>
+                  {% elif order.order_status == 'processing' %}
+                    <span class="badge badge-processing"><i class="fa-solid fa-fire-burner"></i> ກຳລັງປຸງແຕ່ງ</span>
+                  {% elif order.order_status == 'shipped' %}
+                    <span class="badge badge-shipped"><i class="fa-solid fa-motorcycle"></i> ກຳລັງຈັດສົ່ງ</span>
+                  {% elif order.order_status == 'completed' %}
+                    <span class="badge badge-completed"><i class="fa-solid fa-check-double"></i> ສຳເລັດແລ້ວ</span>
+                  {% elif order.order_status == 'cancelled' %}
+                    <span class="badge badge-cancelled"><i class="fa-solid fa-circle-xmark"></i> ຍົກເລີກແລ້ວ</span>
+                  {% else %}
+                    <span class="badge badge-pending">{{ order.order_status }}</span>
+                  {% endif %}
+                </td>
+                <td data-label="ວັນທີສັ່ງຊື້">
+                  <span style="color:var(--muted); font-size:0.86rem;">{{ order.created_at }}</span>
+                </td>
+                <td data-label="ຜູ້ຮັບ">
+                  <div>
+                    <strong>{{ order.recipient_name }}</strong><br>
+                    <small style="color:var(--muted);">{{ order.recipient_phone }}</small>
+                  </div>
+                </td>
+                <td data-label="ຈັດການ">
+                  <div>
+                    {% if order.order_status == 'cancelled' %}
+                      <span style="color:var(--muted); font-size:0.86rem;">-</span>
+                    {% elif order.payment_status == 'pending' and order.payment_method == 'cash' %}
+                      <div><span style="color:var(--muted); font-size:0.82rem; font-weight:600;"><i class="fa-solid fa-money-bill-wave"></i> ຈ່າຍຕອນຮັບເຄື່ອງ</span></div>
+                    {% elif order.payment_status == 'pending' %}
+                      <button type="button" class="btn-action-slip" onclick="openSlipModal('{{ order.id }}', '{{ order.invoice_number }}', '{{ '{:,}'.format(order.total_amount) }}')">
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i> ອັບໂຫຼດສະລິບ
+                      </button>
+                      {% if order.slip_path %}
+                        <div style="margin-top: 4px;"><span class="slip-status-sent"><i class="fa-solid fa-circle-check"></i> ສົ່ງສະລິບແລ້ວ</span></div>
+                      {% endif %}
+                    {% elif order.payment_status == 'paid' %}
+                      <span class="payment-done-text"><i class="fa-solid fa-circle-check"></i> ຊຳລະແລ້ວ</span>
+                    {% else %}
+                      <span style="color:var(--muted); font-size:0.86rem;">-</span>
+                    {% endif %}
+                    {% if order.order_status == 'pending' and order.payment_status == 'pending' %}
+                      <form method="POST" action="{{ url_for('cancel_my_order', order_id=order.id) }}" onsubmit="return confirm('ຕ້ອງການຍົກເລີກອໍເດີ {{ order.invoice_number }} ແທ້ບໍ່?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn-cancel-order">
+                          <i class="fa-solid fa-ban"></i> ຍົກເລີກອໍເດີ
+                        </button>
+                      </form>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-card">
+          <i class="fa-solid fa-receipt"></i>
+          <h3>ຍັງບໍ່ມີປະຫວັດອໍເດີ</h3>
+          <p>ທ່ານຍັງບໍ່ເຄີຍສັ່ງອາຫານເທື່ອ. ເລືອກເມນູແຊບໆແລ້ວສັ່ງເລີຍ!</p>
+          <a href="{{ url_for('home') }}#menu-section" class="btn-order-now">
+            <i class="fa-solid fa-utensils"></i> ເບິ່ງເມນູອາຫານ
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- Bottom Navigation Bar ສຳລັບມືຖື -->
+  <nav class="mobile-bottom-nav" aria-label="ການນຳທາງລຸ່ມ">
+    <a href="{{ url_for('home') }}" class="bottom-nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>ໜ້າຫຼັກ</span>
+    </a>
+    <a href="{{ url_for('home') }}#menu-section" class="bottom-nav-item">
+      <i class="fa-solid fa-utensils"></i>
+      <span>ເມນູ</span>
+    </a>
+    <a href="{{ url_for('home', open_cart='1') }}" class="bottom-nav-item">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>ກະຕ່າ</span>
+    </a>
+    <a href="{{ url_for('my_orders') }}" class="bottom-nav-item active">
+      <i class="fa-solid fa-receipt"></i>
+      <span>ອໍເດີຂ້ອຍ</span>
+    </a>
+    <a href="{{ url_for('account') }}" class="bottom-nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>ບັນຊີ</span>
+    </a>
+  </nav>
+
+  <!-- Slip Upload Modal -->
+  <div class="backdrop-modal" id="slipModal" style="display: none;">
+    <div class="slip-dialog">
+      <button class="slip-close" onclick="closeSlipModal()" type="button" aria-label="ປິດ">✕</button>
+      <h2><i class="fa-solid fa-receipt" style="color:var(--green)"></i> ອັບໂຫຼດສະລິບໂອນເງິນ</h2>
+      <p style="color:var(--muted); font-size:0.88rem;">ເລກທີອໍເດີ: <strong id="modalInvoice" style="color:var(--ink)"></strong></p>
+      <div class="modal-qr-box">
+        <img src="{{ url_for('static', filename='mock-bank-qr.svg') }}" alt="QR Code" style="width:140px; height:140px; margin:0 auto 8px; display:block;">
+        <strong style="color:var(--green); font-size:1.15rem;" id="modalTotal">0 ₭</strong>
+        <p style="margin-top:4px; font-size:0.85rem; color:var(--muted);">Test Bank · ເລກບັນຊີ: 000-000-000 · 078food</p>
+      </div>
+      <form id="slipUploadForm" onsubmit="handleSlipSubmit(event)">
+        <input type="hidden" id="modalOrderId" name="order_id">
+        <label class="slip-file-input">
+          <span>ເລືອກໄຟລ໌ສະລິບ (JPG, PNG, PDF):</span>
+          <input type="file" id="slipFileInput" accept=".jpg,.jpeg,.png,.pdf" required>
+        </label>
+        <div id="slipUploadFeedback" style="margin-bottom:12px; font-size:0.88rem; font-weight:600;"></div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" onclick="closeSlipModal()" class="btn-modal-cancel">ຍົກເລີກ</button>
+          <button type="submit" id="btnSubmitSlip" class="btn-modal-submit"><i class="fa-solid fa-arrow-up-from-bracket"></i> ສົ່ງສະລິບ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function csrfToken() {
+      var meta = document.querySelector('meta[name="csrf-token"]');
+      return meta ? meta.getAttribute('content') : '';
+    }
+
+    function openSlipModal(orderId, invoice, total) {
+      document.getElementById('modalOrderId').value = orderId;
+      document.getElementById('modalInvoice').textContent = invoice;
+      document.getElementById('modalTotal').textContent = total + ' ₭';
+      document.getElementById('slipUploadFeedback').textContent = '';
+      document.getElementById('slipFileInput').value = '';
+      document.getElementById('slipModal').style.display = 'grid';
+    }
+
+    function closeSlipModal() {
+      document.getElementById('slipModal').style.display = 'none';
+    }
+
+    async function handleSlipSubmit(event) {
+      event.preventDefault();
+      var orderId = document.getElementById('modalOrderId').value;
+      var fileInput = document.getElementById('slipFileInput');
+      var feedback = document.getElementById('slipUploadFeedback');
+      var submitBtn = document.getElementById('btnSubmitSlip');
+
+      if (!fileInput.files.length) {
+        feedback.style.color = '#B3402A';
+        feedback.textContent = 'ກະລຸນາເລືອກໄຟລ໌ສະລິບ';
+        return;
+      }
+
+      var formData = new FormData();
+      formData.append('slip', fileInput.files[0]);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'ກຳລັງອັບໂຫຼດ...';
+      feedback.textContent = '';
+
+      try {
+        var response = await fetch('/api/orders/' + orderId + '/slip', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': csrfToken() },
+          body: formData
+        });
+        var result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'ອັບໂຫຼດບໍ່ສຳເລັດ');
+
+        feedback.style.color = '#166534';
+        feedback.textContent = '✓ ' + (result.message || 'ອັບໂຫຼດສະລິບສຳເລັດແລ້ວ!');
+        setTimeout(function() {
+          window.location.reload();
+        }, 1200);
+      } catch (error) {
+        feedback.style.color = '#B3402A';
+        feedback.textContent = '✗ ' + error.message;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> ສົ່ງສະລິບ';
+      }
+    }
+  </script>
+</body>
+
+</html>

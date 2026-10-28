@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ຈັດການອໍເດີ | 078food</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Noto Sans Lao', system-ui, sans-serif; background: #f4f6fa; margin: 0; color: #1e293b; line-height: 1.5; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 16px 5%; background: #1e2433; color: white; position: sticky; top: 0; z-index: 20;
+    }
+    .topbar-brand { color: #f6ad55; font-size: 1.35rem; font-weight: 700; text-decoration: none; }
+    .topbar-nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+      color: #e2e8f0; text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      background: rgba(255, 255, 255, 0.08); border: 0; cursor: pointer; font-family: inherit;
+    }
+    .nav-btn:hover, .nav-btn.active { background: #16834a; color: white; }
+    .nav-btn.logout { background: #dc2626; color: white; }
+    main { max-width: 1280px; margin: auto; padding: 24px 20px 50px; }
+    .page-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+    .page-head h1 { margin: 0; font-size: 1.5rem; }
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .filter-pill {
+      padding: 7px 14px; border-radius: 99px; background: white; border: 1px solid #cbd5e1;
+      color: #334155; text-decoration: none; font-size: 0.86rem; font-weight: 600;
+    }
+    .filter-pill.active, .filter-pill:hover { background: #16834a; color: white; border-color: #16834a; }
+    section { background: white; padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0; overflow-x: auto; }
+    a.btn, button {
+      display: inline-block; padding: 8px 12px; border: 0; border-radius: 6px;
+      background: #16834a; color: white; text-decoration: none; cursor: pointer;
+      font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    }
+    button:hover, a.btn:hover { background: #12673a; }
+    table { width: 100%; min-width: 980px; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; vertical-align: top; }
+    th { background: #f8fafc; color: #475569; font-weight: 700; font-size: 0.83rem; }
+    select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 0.85rem; }
+    form.inline-form { display: flex; gap: 6px; align-items: center; margin: 0; }
+    .message { padding: 12px 14px; background: #dcfce7; color: #166534; border-radius: 8px; margin-bottom: 16px; font-weight: 600; }
+    .message.error { background: #fee2e2; color: #991b1b; }
+    .item-line { font-size: 0.86rem; margin-bottom: 3px; color: #1e293b; }
+    .method-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; background: #f1f5f9; color: #475569; font-size: 0.78rem; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="{{ url_for('admin_dashboard') }}" class="topbar-brand">🍲 078food Admin</a>
+    <nav class="topbar-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">📊 ພາບລວມ</a>
+      <a href="{{ url_for('admin_orders') }}" class="nav-btn active">📋 ອໍເດີ</a>
+      <a href="{{ url_for('admin_products') }}" class="nav-btn">🍲 ເມນູອາຫານ</a>
+      <a href="{{ url_for('admin_categories') }}" class="nav-btn">📁 ໝວດໝູ່</a>
+      <a href="{{ url_for('home') }}" class="nav-btn">🏠 ໜ້າຮ້ານ</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-head">
+      <h1>ຈັດການອໍເດີ ({{ orders|length }})</h1>
+    </div>
+
+    <div class="filter-bar">
+      <a class="filter-pill {{ 'active' if not status_filter else '' }}" href="{{ url_for('admin_orders') }}">ທັງໝົດ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'pending' else '' }}" href="{{ url_for('admin_orders', status='pending') }}">⏳ ລໍຖ້າຢືນຢັນ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'confirmed' else '' }}" href="{{ url_for('admin_orders', status='confirmed') }}">✓ ຢືນຢັນແລ້ວ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'processing' else '' }}" href="{{ url_for('admin_orders', status='processing') }}">🔥 ກຳລັງປຸງແຕ່ງ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'shipped' else '' }}" href="{{ url_for('admin_orders', status='shipped') }}">🛵 ກຳລັງຈັດສົ່ງ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'completed' else '' }}" href="{{ url_for('admin_orders', status='completed') }}">✅ ສຳເລັດແລ້ວ</a>
+      <a class="filter-pill {{ 'active' if status_filter == 'cancelled' else '' }}" href="{{ url_for('admin_orders', status='cancelled') }}">✗ ຍົກເລີກແລ້ວ</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="message {{ 'error' if category == 'error' else '' }}">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th>ເລກອໍເດີ</th>
+            <th>ລາຍການອາຫານ</th>
+            <th>ຜູ້ຮັບ / ທີ່ຢູ່ຈັດສົ່ງ</th>
+            <th>ຍອດລວມ</th>
+            <th>ການຊຳລະ</th>
+            <th>ສະຖານະອໍເດີ</th>
+            <th>ວັນທີສັ່ງ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <strong>{{ order.invoice_number }}</strong><br>
+              <small style="color:#64748b;">#{{ order.id }} · {{ order.customer_username or 'Guest' }}</small>
+            </td>
+            <td>
+              {% for item in order['items'] %}
+                <div class="item-line">• <strong>{{ item.product_name }}</strong> × {{ item.quantity }} <small style="color:#64748b;">({{ "{:,}".format(item.subtotal) }} ₭)</small></div>
+              {% else %}
+                <span style="color:#94a3b8;">-</span>
+              {% endfor %}
+            </td>
+            <td>
+              <strong>{{ order.recipient_name }}</strong> · {{ order.recipient_phone }}<br>
+              <small style="color:#475569;">{{ order.shipping_address }}</small>
+            </td>
+            <td>
+              <strong>{{ "{:,}".format(order.total_amount) }} ₭</strong><br>
+              <small style="color:#64748b;">ອາຫານ {{ "{:,}".format(order.subtotal) }} ₭ + ສົ່ງ {{ "{:,}".format(order.shipping_fee) }} ₭</small>
+            </td>
+            <td>
+              <div>
+                <strong>
+                  {% if order.payment_status == 'paid' %}
+                    <span style="color:#166534;">✓ ຈ່າຍແລ້ວ</span>
+                  {% elif order.payment_status == 'refunded' %}
+                    <span style="color:#64748b;">↩ ຄືນເງິນແລ້ວ</span>
+                  {% elif order.payment_status == 'pending' %}
+                    <span style="color:#b45309;">⏳ ລໍຖ້າກວດສອບ</span>
+                  {% elif order.payment_status == 'failed' %}
+                    <span style="color:#b42318;">✗ ຍົກເລີກ/ບໍ່ສຳເລັດ</span>
+                  {% else %}
+                    {{ order.payment_status }}
+                  {% endif %}
+                </strong>
+              </div>
+              <span class="method-tag">
+                {% if order.payment_method == 'cash' %}💵 ເງິນສົດປາຍທາງ
+                {% elif order.payment_method == 'card' %}💳 Stripe Card
+                {% else %}📲 ໂອນ / QR{% endif %}
+              </span>
+              {% if order.payment_status == 'pending' and order.order_status != 'cancelled' %}
+              <form method="POST" action="{{ url_for('admin_confirm_order_payment', order_id=order.id) }}" style="margin-top: 8px;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">✓ ຢືນຢັນຮັບເງິນ</button>
+              </form>
+              {% endif %}
+              {% if order.slip_path %}
+              <div style="margin-top: 6px;">
+                <a class="btn" href="{{ url_for('admin_view_payment_slip', order_id=order.id) }}" target="_blank" style="background:#0284c7;">📄 ເບິ່ງສະລິບ</a>
+              </div>
+              {% endif %}
+            </td>
+            <td>
+              {% if order.order_status == 'cancelled' %}
+                <span style="color:#b42318; font-weight:700;">✗ ຍົກເລີກແລ້ວ (ຄືນ Stock ແລ້ວ)</span>
+              {% else %}
+                <form class="inline-form" method="POST" action="{{ url_for('admin_update_order_status', order_id=order.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <select name="status">
+                    <option value="pending" {% if order.order_status == 'pending' %}selected{% endif %}>ລໍຖ້າຢືນຢັນ (pending)</option>
+                    <option value="confirmed" {% if order.order_status == 'confirmed' %}selected{% endif %}>ຢືນຢັນແລ້ວ (confirmed)</option>
+                    <option value="processing" {% if order.order_status == 'processing' %}selected{% endif %}>ກຳລັງປຸງແຕ່ງ (processing)</option>
+                    <option value="shipped" {% if order.order_status == 'shipped' %}selected{% endif %}>ກຳລັງຈັດສົ່ງ (shipped)</option>
+                    <option value="completed" {% if order.order_status == 'completed' %}selected{% endif %}>ສຳເລັດແລ້ວ (completed)</option>
+                  </select>
+                  <button type="submit">ບັນທຶກ</button>
+                </form>
+                {% if order.order_status != 'completed' %}
+                <form method="POST" action="{{ url_for('admin_cancel_order', order_id=order.id) }}" style="margin-top: 8px;" onsubmit="return confirm('ຢືນຢັນການຍົກເລີກອໍເດີ ແລະ ຄືນ Stock?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" style="background:#b42318;">ຍົກເລີກ/ຄືນ Stock</button>
+                </form>
+                {% endif %}
+              {% endif %}
+            </td>
+            <td><small style="color:#64748b;">{{ order.created_at }}</small></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">ຍັງບໍ່ມີອໍເດີໃນໝວດນີ້.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

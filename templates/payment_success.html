@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ຈ່າຍເງິນສຳເລັດ | 078food</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Noto+Serif+Lao:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #FAF9F6;
+      --card: #FFFFFF;
+      --ink: #2B2523;
+      --muted: #6F6663;
+      --green: #2D5A27;
+      --green-dark: #22461e;
+      --line: #E6E2D8;
+      --font: 'Noto Sans Lao', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      font-family: var(--font);
+      padding: 20px;
+      color: var(--ink);
+    }
+
+    .success-card {
+      max-width: 440px;
+      width: 100%;
+      padding: 38px 28px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(74, 62, 61, 0.08);
+    }
+
+    .icon-success {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      color: #166534;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+      color: var(--green);
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background .2s;
+    }
+
+    .btn-home:hover {
+      background: var(--green-dark);
+    }
+
+    .btn-orders {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .btn-orders:hover {
+      background: var(--bg);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="success-card">
+    <div class="icon-success">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <h1>ຈ່າຍເງິນສຳເລັດ!</h1>
+    <p>ຂອບໃຈສຳລັບການສັ່ງຊື້. ອໍເດີຂອງທ່ານກຳລັງຖືກດຳເນີນການ ແລະ ຈັດສົ່ງໂດຍໄວ.</p>
+    <div class="actions">
+      <a href="{{ url_for('home') }}" class="btn-home">
+        <i class="fa-solid fa-house"></i> ກັບໜ້າຫຼັກ
+      </a>
+      <a href="{{ url_for('my_orders') }}" class="btn-orders">
+        <i class="fa-solid fa-receipt"></i> ເບິ່ງປະຫວັດອໍເດີ
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>

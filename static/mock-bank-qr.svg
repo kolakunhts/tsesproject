@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 210" role="img" aria-label="Mock QR code">
+  <rect width="210" height="210" fill="#fff"/>
+  <g fill="#111">
+    <path d="M10 10h60v60H10zM20 20v40h40V20zM30 30h20v20H30z"/>
+    <path d="M140 10h60v60h-60zM150 20v40h40V20zM160 30h20v20h-20z"/>
+    <path d="M10 140h60v60H10zM20 150v40h40v-40zM30 160h20v20H30z"/>
+    <path d="M85 10h15v15H85zM110 10h15v30h-15zM80 45h20v15H80zM105 55h20v15h-20z"/>
+    <path d="M80 85h15v15H80zM105 80h15v30h-15zM130 85h15v15h-15zM155 85h15v15h-15zM180 80h20v15h-20z"/>
+    <path d="M80 115h30v15H80zM120 115h15v30h-15zM145 110h30v15h-30zM185 110h15v30h-15z"/>
+    <path d="M80 150h15v15H80zM105 145h30v15h-30zM145 150h15v30h-15zM170 145h30v15h-30zM80 180h30v20H80zM120 180h15v20h-15zM170 180h30v20h-30z"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    container_name: 078food-web
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./catalog.db:/app/catalog.db
+      - ./uploads:/app/uploads
+    restart: unless-stopped

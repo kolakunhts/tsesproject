@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ຈັດການອາຫານ | 078food</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans Lao', system-ui, sans-serif;
+      background: #f4f6fa;
+      margin: 0;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 16px 5%; background: #1e2433; color: white; position: sticky; top: 0; z-index: 20;
+    }
+    .topbar-brand { color: #f6ad55; font-size: 1.35rem; font-weight: 700; text-decoration: none; }
+    .topbar-nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+      color: #e2e8f0; text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      background: rgba(255, 255, 255, 0.08); border: 0; cursor: pointer; font-family: inherit;
+    }
+    .nav-btn:hover, .nav-btn.active { background: #16834a; color: white; }
+    main { max-width: 1180px; margin: auto; padding: 24px 20px 50px; }
+    section {
+      background: white; padding: 22px; margin: 18px 0; border-radius: 14px;
+      border: 1px solid #e2e8f0; overflow-x: auto;
+    }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; }
+    input, select, textarea, button {
+      box-sizing: border-box; padding: 10px 12px; margin-bottom: 12px; font: inherit;
+    }
+    input, select, textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; }
+    button, .link {
+      display: inline-block; padding: 9px 14px; border: 0; border-radius: 8px;
+      background: #16834a; color: white; text-decoration: none; cursor: pointer;
+      font-weight: 600; font-size: 0.88rem; margin-bottom: 0;
+    }
+    .danger { background: #b42318; }
+    table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; vertical-align: middle; }
+    th { background: #f8fafc; color: #475569; font-size: 0.83rem; }
+    .message { padding: 12px 14px; background: #dcfce7; color: #166534; border-radius: 8px; font-weight: 600; }
+    .message.error { background: #fee2e2; color: #991b1b; }
+    .status-off { color: #b42318; font-weight: 600; }
+    .status-on { color: #16834a; font-weight: 600; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .actions form { margin: 0; }
+    .prod-cell { display: flex; align-items: center; gap: 10px; }
+    .prod-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: #f1f5f9; flex-shrink: 0; }
+    .prod-placeholder { width: 44px; height: 44px; border-radius: 8px; background: #f1f5f9; display: grid; place-items: center; font-size: 1.2rem; flex-shrink: 0; }
+    .stock-badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; }
+    .stock-ok { background: #dcfce7; color: #166534; }
+    .stock-low { background: #fef3c7; color: #92400e; }
+    .stock-out { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="{{ url_for('admin_dashboard') }}" class="topbar-brand">🍲 078food Admin</a>
+    <nav class="topbar-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">📊 ພາບລວມ</a>
+      <a href="{{ url_for('admin_orders') }}" class="nav-btn">📋 ອໍເດີ</a>
+      <a href="{{ url_for('admin_products') }}" class="nav-btn active">🍲 ເມນູອາຫານ</a>
+      <a href="{{ url_for('admin_categories') }}" class="nav-btn">📁 ໝວດໝູ່</a>
+      <a href="{{ url_for('home') }}" class="nav-btn">🏠 ໜ້າຮ້ານ</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>ຈັດການລາຍການອາຫານ</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <p class="message {{ category }}">{{ message }}</p>
+    {% endfor %}
+    {% endwith %}
+
+    <section>
+      <h2 style="margin-top:0;">+ ເພີ່ມອາຫານໃໝ່</h2>
+
+      {% if categories %}
+      <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-grid">
+          <div>
+            <label for="name">ຊື່ອາຫານ *</label>
+            <input id="name" name="name" required maxlength="150" placeholder="ເຊັ່ນ ເຝີໄກ່ພິເສດ">
+          </div>
+          <div>
+            <label for="category_id">ໝວດໝູ່ *</label>
+            <select id="category_id" name="category_id" required>
+              <option value="">-- ເລືອກໝວດໝູ່ --</option>
+              {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label for="price">ລາຄາ (ກີບ) *</label>
+            <input id="price" name="price" type="number" min="0" step="1" required placeholder="30000">
+          </div>
+          <div>
+            <label for="stock">ຈຳນວນສະຕັອກ *</label>
+            <input id="stock" name="stock" type="number" min="0" step="1" required placeholder="20">
+          </div>
+        </div>
+
+        <label for="image_url">URL ຮູບອາຫານ (ບໍ່ບັງຄັບ)</label>
+        <input id="image_url" name="image_url" type="url" placeholder="https://example.com/food.jpg">
+
+        <label for="description">ລາຍລະອຽດ</label>
+        <textarea id="description" name="description" rows="2" placeholder="ຄຳອະທິບາຍອາຫານ..."></textarea>
+
+        <button type="submit">+ ເພີ່ມອາຫານ</button>
+      </form>
+      {% else %}
+      <p>ຍັງບໍ່ມີໝວດໝູ່. ກະລຸນາສ້າງໝວດໝູ່ກ່ອນ.</p>
+      <a class="link" href="{{ url_for('admin_categories') }}">ໄປຈັດການໝວດໝູ່</a>
+      {% endif %}
+    </section>
+
+    <section>
+      <h2 style="margin-top:0;">ລາຍການອາຫານທັງໝົດ ({{ products|length }})</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ເມນູອາຫານ</th>
+            <th>ໝວດໝູ່</th>
+            <th>ລາຄາ</th>
+            <th>ສະຕັອກ</th>
+            <th>ສະຖານະ</th>
+            <th>ຈັດການ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>#{{ product.id }}</td>
+            <td>
+              <div class="prod-cell">
+                {% if product.image_url %}
+                  <img class="prod-thumb" src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">
+                {% else %}
+                  <div class="prod-placeholder">🍲</div>
+                {% endif %}
+                <div>
+                  <strong>{{ product.name }}</strong>
+                  {% if product.description %}<br><small style="color:#64748b;">{{ product.description }}</small>{% endif %}
+                </div>
+              </div>
+            </td>
+            <td>{{ product.category_name }}</td>
+            <td><strong>{{ "{:,}".format(product.price) }} ₭</strong></td>
+            <td>
+              <span class="stock-badge {{ 'stock-out' if product.stock == 0 else ('stock-low' if product.stock <= 5 else 'stock-ok') }}">
+                {{ product.stock }} ຈານ
+              </span>
+            </td>
+            <td>
+              {% if product.is_active %}
+              <span class="status-on">● ກຳລັງຂາຍ</span>
+              {% else %}
+              <span class="status-off">○ ປິດການຂາຍ</span>
+              {% endif %}
+            </td>
+            <td>
+              <div class="actions">
+                <a class="link" href="{{ url_for('admin_edit_product', product_id=product.id) }}">ແກ້ໄຂ</a>
+                <form method="POST" action="{{ url_for('admin_toggle_product', product_id=product.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="{{ 'danger' if product.is_active else '' }}" type="submit">
+                    {{ 'ປິດຂາຍ' if product.is_active else 'ເປີດຂາຍ' }}
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7">ຍັງບໍ່ມີລາຍການອາຫານ.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+
+</html>
